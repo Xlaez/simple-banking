@@ -46,7 +46,7 @@ func RandomMoney() int64 {
 
 // returns a random currency from the slice decalred
 func RandomCurrency() string  {
-	currencies := []string{"EUR", "NGN", "USD"}
+	currencies := []string{EUR, NGN, USD}
 
 	n := len(currencies)
 
