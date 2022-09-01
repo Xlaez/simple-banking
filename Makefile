@@ -6,8 +6,12 @@ dropdb:
 	docker exec -it postgres13-old dropdb bank
 migrateup: 
 	migrate -path ./db/migration/ -database "postgresql://root:password@localhost:5432/bank?sslmode=disable" -verbose up
+migrateup1: 
+	migrate -path db/migration/ -database "postgresql://root:password@localhost:5432/bank?sslmode=disable" -verbose up 1
 migratedown:
 	migrate -path ./db/migration/ -database "postgresql://root:password@localhost:5432/bank?sslmode=disable" -verbose down
+migratedown1:
+	migrate -path db/migration/ -database "postgresql://root:password@localhost:5432/bank?sslmode=disable" -verbose down 1	
 test:
 	go test -v -cover ./...
 sqlc:
@@ -16,4 +20,7 @@ serve:
 	go run main.go
 migrateupdate:
 	migrate create -ext sql -dir db/migration -seq add_users
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test serve migrateupdate
+opendb:
+	docker exec -it postgres13-old psql -U root -d bank
+.PHONY: 
+	postgres createdb dropdb migrateup migratedown sqlc test serve migrateupdate cleandb migratedown1 migrateup1
